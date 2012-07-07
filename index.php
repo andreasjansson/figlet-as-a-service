@@ -29,6 +29,12 @@ function fontnames() {
   return $names;
 }
 
+function badRequest($message) {
+  header('HTTP/1.1 400 Bad Request');
+  echo $message;
+  exit();
+}
+
 if(!isset($_GET['s'])) {
   $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
@@ -60,6 +66,8 @@ if(isset($_GET['f'])) {
   $font = $_GET['f'];
   if(in_array($font, fontnames()))
     $f = "-f$font";
+  else
+    badRequest('Unknown font: ' . $font);
 }
 
 $name = tempnam('/tmp', 'figlet');
